@@ -8,15 +8,11 @@
     "multiple",
     "simple"
   ],
-  "homepage": "https://github.com/Fabianlindfors/multi.js",
+  "homepage": "https://gitlab.mafra.cz/bohdan.partyk/multi.js",
   "license": "MIT",
-  "author": {
-    "name": "Fabian Lindfors",
-    "url": "http://fabianlindfors.se"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Fabianlindfors/multi.js.git"
+    "url": "https://gitlab.mafra.cz/bohdan.partyk/multi.js.git"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
