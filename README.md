@@ -45,7 +45,9 @@ multi( select_element, {
     'enable_search': true,
     'search_placeholder': 'Search...',
     'non_selected_header': null,
-    'selected_header': null
+    'selected_header': null,
+    'max_items' : null,
+    'max_items_call' : function(select, settings){alert('Maximální počet vybraných položek je ' + settings["max_items"])
 });
 ```
 

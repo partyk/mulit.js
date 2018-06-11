@@ -14,9 +14,38 @@ var multi = (function() {
         el.dispatchEvent(e);
     };
 
+    var getCountSelectedItems = function (select) {
+        var cnt = 0;
+        for (var i = 0; i < select.options.length; i++) {
+            if (select.options[i].selected) {
+                cnt++;
+            }
+        }
+        return cnt++;
+    };
+
+    var isMaxCountItems = function (select, settings) {
+        if (!settings.max_items) {
+            return;
+        }
+
+        if(getCountSelectedItems(select) >= settings.max_items) {
+            if (typeof settings.max_items_call === 'function') {
+                settings.max_items_call(select, settings);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     // Toggles the target option on the select
-    var toggle_option = function ( select, event ) {
+    var toggle_option = function ( select, event, settings ) {
         var option = select.options[event.target.getAttribute("multi-index")];
+
+        if (!option.selected && isMaxCountItems(select, settings)) {
+            return;
+        }
 
         if (option.disabled) {
           return;
@@ -135,7 +164,8 @@ var multi = (function() {
         settings["search_placeholder"] = typeof settings["search_placeholder"] !== "undefined" ? settings["search_placeholder"] : "Search...";
         settings["non_selected_header"] = typeof settings["non_selected_header"] !== "undefined" ? settings["non_selected_header"] : null;
         settings["selected_header"] = typeof settings["selected_header"] !== "undefined" ? settings["selected_header"] : null;
-
+        settings["max_items"] = typeof settings["max_items"] !== "undefined" ? settings["max_items"] : null;
+        settings["max_items_call"] = typeof settings["max_items_call"] !== "undefined" ? settings["max_items"] : function(select, settings){alert('Maximální počet vybraných položek je ' + settings["max_items"])};
 
         // Check if already initalized
         if (select.dataset.multijs != null) {
@@ -183,7 +213,7 @@ var multi = (function() {
         // Add click handler to toggle the selected status
         wrapper.addEventListener("click", function (event) {
             if (event.target.getAttribute("multi-index")) {
-                toggle_option(select, event);
+                toggle_option(select, event, settings);
             }
         });
 
@@ -196,7 +226,7 @@ var multi = (function() {
             if (is_option && is_action_key) {
                 // Prevent the default action to stop scrolling when space is pressed
                 event.preventDefault();
-                toggle_option(select, event);
+                toggle_option(select, event, settings);
             }
         });
 
